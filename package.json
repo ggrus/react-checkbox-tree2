@@ -23,7 +23,7 @@
     "build-script": "npm run build-script-node && npm run build-script-web",
     "build-script-node": "webpack --env=target=node",
     "build-script-web": "webpack --env=target=web",
-    "build-sass": "sass src/scss/react-checkbox-tree.scss lib/react-checkbox-tree.css && cp lib/react-checkbox-tree.css .css-compare/scss.css",
+    "build-sass": "sass src/scss/react-checkbox-tree.scss lib/react-checkbox-tree.css",
     "build-style": "npm run build-less && npm run build-sass && npm run build-style-autoprefix",
     "build-style-autoprefix": "postcss lib/react-checkbox-tree.css --use autoprefixer --output lib/react-checkbox-tree.css",
     "build": "npm run build-script && npm run build-style",
