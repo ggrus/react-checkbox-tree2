@@ -66,9 +66,9 @@ function BasicExample() {
     const [expanded, setExpanded] = useState([]);
     const [text, setText] = useState('');
 
-    const onCheck = (keys, node, parentKeys, labels) => {
+    const onCheck = (keys, node, parentKeys, checkedLabels) => {
         console.log(node);
-        setLabels(labels);
+        setLabels(checkedLabels);
         setChecked(keys);
         setParentChecked(parentKeys);
     };
