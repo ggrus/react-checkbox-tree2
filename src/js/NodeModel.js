@@ -101,6 +101,29 @@ class NodeModel {
         });
     }
 
+    getValuesByParentModel(values) {
+        const result = [];
+
+        values.forEach((value) => {
+            const flatNode = this.flatNodes[value];
+            // для верхнего уровня нет родителя
+            if (flatNode.parent.value !== undefined) {
+                // если родитель не чекнут, то добавляем значение ноды
+                if (!this.flatNodes[flatNode.parent.value].checked) {
+                    result.push(flatNode.value);
+                }
+            } else {
+                result.push(flatNode.value);
+            }
+        });
+
+        return result;
+    }
+
+    getFieldByKeys(keys, fieldName) {
+        return keys.map((key) => this.getNode(key)[fieldName]);
+    }
+
     serializeList(key) {
         const list = [];
 

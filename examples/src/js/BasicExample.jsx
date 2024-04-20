@@ -61,11 +61,16 @@ const nodes = [
 
 function BasicExample() {
     const [checked, setChecked] = useState([]);
+    const [parentChecked, setParentChecked] = useState([]);
+    const [labels, setLabels] = useState([]);
     const [expanded, setExpanded] = useState([]);
     const [text, setText] = useState('');
 
-    const onCheck = (value) => {
-        setChecked(value);
+    const onCheck = (keys, node, parentKeys, labels) => {
+        console.log(node);
+        setLabels(labels);
+        setChecked(keys);
+        setParentChecked(parentKeys);
     };
 
     const onExpand = (value) => {
@@ -78,6 +83,11 @@ function BasicExample() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
             />
+            <br />
+            {parentChecked.join(', ')}
+            <br />
+            {labels.join(', ')}
+            <br />
             <CheckboxTree
                 checkModel='all'
                 checked={checked}
