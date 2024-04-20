@@ -25,6 +25,7 @@ class TreeNode extends React.PureComponent {
             PropTypes.string,
             PropTypes.number,
         ]).isRequired,
+        visible: PropTypes.bool.isRequired,
         onCheck: PropTypes.func.isRequired,
         onExpand: PropTypes.func.isRequired,
 
@@ -305,6 +306,7 @@ class TreeNode extends React.PureComponent {
             className,
             disabled,
             expanded,
+            visible,
             isLeaf,
         } = this.props;
         const nodeClass = classNames({
@@ -315,6 +317,10 @@ class TreeNode extends React.PureComponent {
             'rct-node-collapsed': !isLeaf && !expanded,
             'rct-disabled': disabled,
         }, className);
+
+        if (!visible) {
+            return null;
+        }
 
         return (
             <li className={nodeClass}>

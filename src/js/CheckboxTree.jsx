@@ -17,7 +17,6 @@ import nodeShape from './shapes/nodeShape';
 class CheckboxTree extends React.Component {
     static propTypes = {
         nodes: PropTypes.arrayOf(nodeShape).isRequired,
-
         checkModel: PropTypes.oneOf([CHECK_MODEL.LEAF, CHECK_MODEL.ALL]),
         checked: listShape,
         direction: PropTypes.string,
@@ -25,6 +24,7 @@ class CheckboxTree extends React.Component {
         expandDisabled: PropTypes.bool,
         expandOnClick: PropTypes.bool,
         expanded: listShape,
+        filterText: PropTypes.string,
         icons: iconsShape,
         iconsClass: PropTypes.string,
         id: PropTypes.string,
@@ -44,6 +44,7 @@ class CheckboxTree extends React.Component {
     };
 
     static defaultProps = {
+        filterText: '',
         checkModel: CHECK_MODEL.LEAF,
         checked: [],
         direction: 'ltr',
@@ -275,6 +276,7 @@ class CheckboxTree extends React.Component {
                     title={showNodeTitle ? node.title || node.label : node.title}
                     treeId={id}
                     value={node.value}
+                    visible={flatNode.isVisible}
                     onCheck={this.onCheck}
                     onClick={onClick && this.onNodeClick}
                     onExpand={this.onExpand}
@@ -356,8 +358,11 @@ class CheckboxTree extends React.Component {
             iconsClass,
             nodes,
             nativeCheckboxes,
+            filterText,
         } = this.props;
         const { id } = this.state;
+        const { model } = this.state;
+        model.filterNodes(filterText);
         const treeNodes = this.renderTreeNodes(nodes);
 
         const className = classNames({

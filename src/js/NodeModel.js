@@ -50,6 +50,7 @@ class NodeModel {
             }
 
             this.flatNodes[node.value] = {
+                isVisible: true,
                 ...node,
                 parent,
                 isChild: parent.value !== undefined,
@@ -179,6 +180,77 @@ class NodeModel {
         this.flatNodes[nodeValue][key] = toggleValue;
 
         return this;
+    }
+
+    compareLabel(label, filterText) {
+        return label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1;
+    }
+
+    setVisibleAndExpandToParent(node) {
+        const flatNode = this.flatNodes[node.value];
+        flatNode.isVisible = true;
+        flatNode.expanded = true;
+        if (flatNode.isChild) {
+            this.setVisibleAndExpandToParent(flatNode.parent);
+        }
+    }
+
+    setVisibleToChildren(node) {
+        const flatNode = this.flatNodes[node.value];
+
+        if (this.nodeHasChildren(flatNode)) {
+            flatNode.children.forEach((cNode) => {
+                const childNode = this.flatNodes[cNode.value];
+                childNode.isVisible = true;
+                if (this.nodeHasChildren(childNode)) {
+                    this.setVisibleToChildren(childNode);
+                }
+            });
+        }
+    }
+
+    toggleVisibleToAll(toggleValue) {
+        Object.keys(this.flatNodes).forEach((value) => {
+            this.flatNodes[value].isVisible = toggleValue;
+        });
+    }
+
+    filterNodes(filterText) {
+        if (filterText === '') {
+            this.toggleVisibleToAll(true);
+            return;
+        }
+
+        this.toggleVisibleToAll(false);
+        const filteredIds = new Set();
+
+        Object.keys(this.flatNodes).forEach((value) => {
+            const node = this.flatNodes[value];
+            if (this.compareLabel(node.label, filterText)) {
+                filteredIds.add(node.value);
+            }
+        });
+        // сперва проходим по детям которые заметчились и удаляем их из сета
+        filteredIds.forEach((value) => {
+            const node = this.flatNodes[value];
+            if (node.isLeaf) {
+                node.isVisible = true;
+                this.setVisibleAndExpandToParent(node.parent);
+                filteredIds.delete(node.value);
+            }
+            if (filteredIds.has(node.parent.value)) {
+                filteredIds.delete(node.parent.value);
+            }
+        });
+        // проходим по родителям которые заметчились и делаем видимыми детей
+        filteredIds.forEach((value) => {
+            const node = this.flatNodes[value];
+            this.setVisibleAndExpandToParent(node.parent);
+            node.isVisible = true;
+            if (this.nodeHasChildren(node)) {
+                this.setVisibleToChildren(node);
+            }
+        });
     }
 }
 
