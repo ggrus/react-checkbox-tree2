@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-declare module "react-checkbox-tree" {
+declare module "react-checkbox-tree2" {
     interface Node {
         label: React.ReactNode;
         value: string;
@@ -62,7 +62,13 @@ declare module "react-checkbox-tree" {
         showExpandAll?: boolean;
         showNodeIcon?: boolean;
         showNodeTitle?: boolean;
-        onCheck?: (checked: Array<string>, node: OnCheckNode) => void;
+        filterText?:string;
+        onCheck?: (
+            checked: Array<string>,
+            node: OnCheckNode,
+            checkedByParentModel: Array<string>,
+            parentCheckedValues: Array<string>,
+        ) => void;
         onClick?: (node: OnCheckNode) => void;
         onExpand?: (expanded: Array<string>, node: OnExpandNode) => void;
     }
