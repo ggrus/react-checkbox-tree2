@@ -210,6 +210,7 @@ class NodeModel {
     }
 
     setVisibleAndExpandToParent(node) {
+        if (!node.value) return;
         const flatNode = this.flatNodes[node.value];
         flatNode.isVisible = true;
         flatNode.expanded = true;
