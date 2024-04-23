@@ -60,7 +60,7 @@ const nodes = [
 ];
 
 function BasicExample() {
-    const [checked, setChecked] = useState([]);
+    const [checked, setChecked] = useState(['113']);
     const [parentChecked, setParentChecked] = useState([]);
     const [labels, setLabels] = useState([]);
     const [expanded, setExpanded] = useState([]);

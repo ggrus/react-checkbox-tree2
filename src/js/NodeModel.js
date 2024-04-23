@@ -101,6 +101,44 @@ class NodeModel {
         });
     }
 
+    deserializeListsByParentModel({ checked, expanded }) {
+        const listKeys = ['checked', 'expanded'];
+
+        // Reset values to false
+        Object.keys(this.flatNodes).forEach((value) => {
+            listKeys.forEach((listKey) => {
+                this.flatNodes[value][listKey] = false;
+            });
+        });
+        // Deserialize checked and their children values and set their nodes to true
+        checked.forEach((value) => {
+            const node = this.flatNodes[value];
+
+            if (node !== undefined) {
+                node.checked = true;
+                if (node.children) {
+                    this.setCheckedToChildren(node.children);
+                }
+            }
+        });
+        // Deserialize expanded values and set their nodes to true
+        expanded.forEach((value) => {
+            if (this.flatNodes[value] !== undefined) {
+                this.flatNodes[value].expanded = true;
+            }
+        });
+    }
+
+    setCheckedToChildren(children) {
+        children.forEach(({ value }) => {
+            const node = this.flatNodes[value];
+            node.checked = true;
+            if (node.children) {
+                this.setCheckedToChildren(node.children);
+            }
+        });
+    }
+
     getValuesByParentModel(values) {
         const result = [];
 

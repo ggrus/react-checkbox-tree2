@@ -90,7 +90,8 @@ class CheckboxTree extends React.Component {
 
         const model = new NodeModel(props);
         model.flattenNodes(props.nodes);
-        model.deserializeLists({
+
+        model.deserializeListsByParentModel({
             checked: props.checked,
             expanded: props.expanded,
         });
@@ -128,7 +129,7 @@ class CheckboxTree extends React.Component {
             newState = { ...newState, id };
         }
 
-        model.deserializeLists({
+        model.deserializeListsByParentModel({
             checked: newProps.checked,
             expanded: newProps.expanded,
         });
